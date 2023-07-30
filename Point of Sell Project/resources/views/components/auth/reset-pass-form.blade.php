@@ -35,6 +35,9 @@
 
             if (response.status === 200 && response.status['status'] === 'success') {
                 successToast(response.data['message']);
+                setTimeout(function(){
+                    window.location.href = '/login-page'
+                },1000)
             } else {
                 errorToast(response.data['message']);
             }

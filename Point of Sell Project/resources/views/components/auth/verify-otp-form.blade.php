@@ -32,7 +32,7 @@
                 successToast(response.data['message'])
                 sessionStorage.clear()
                 setTimeout(function(){
-                    window.location.href = '/login-page'
+                    window.location.href = '/reset-pass-page'
                 },1000)
             }
             else{

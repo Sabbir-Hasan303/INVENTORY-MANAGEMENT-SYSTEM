@@ -26,6 +26,9 @@
             if (response.status === 200 && response.data['status']==='Successful') {
                 sessionStorage.setItem('email', email);
                 successToast(response.data['message']);
+                setTimeout(function(){
+                    window.location.href = '/verify-otp-page'
+                },1000)
 
             } else {
                 errorToast(response.data['message'])

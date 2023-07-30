@@ -71,14 +71,13 @@ class UserController extends Controller
             $token = JWTToken::CreateToken($request->input('email'), $count->id);
             return response()->json([
                 "status" => "success",
-                "message" => "User Login Successfully",
-                "token" => $token
-            ]);
+                "message" => "Yoo User Login Successfully",
+            ])->cookie('token',$token, 60*24*30);
         }
         else{
             return response()->json([
                 "status" => "error",
-                "message" => "Invalid Credentials"
+                "message" => "Incorrect Email or Password",
             ]);
         }
     }
@@ -151,6 +150,6 @@ class UserController extends Controller
     }
 
     function UserLogout(Request $request){
-        return redirect('/login-page')->cookie('token',-1);
+        return redirect('/login-page')->cookie('token','',-1);
     }
 }

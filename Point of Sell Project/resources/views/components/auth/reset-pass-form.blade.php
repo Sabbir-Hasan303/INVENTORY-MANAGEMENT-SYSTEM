@@ -17,3 +17,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    async function ResetPass() {
+        var password = document.getElementById('password').value;
+        var cpassword = document.getElementById('cpassword').value;
+        if (password.length === 0) {
+            errorToast('Password is required')
+        } else if (cpassword.length === 0) {
+            errorToast('Confirm Password is required')
+        } else {
+            let url = '/pass-reset'
+            let data = {
+                password: password
+            }
+            let response = await axios.post(url, data);
+
+            if (response.status === 200 && response.status['status'] === 'success') {
+                successToast(response.data['message']);
+            } else {
+                errorToast(response.data['message']);
+            }
+        }
+    }
+</script>

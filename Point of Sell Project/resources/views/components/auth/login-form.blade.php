@@ -13,9 +13,9 @@
                     <hr/>
                     <div class="float-end mt-3">
                         <span>
-                            <a class="text-center ms-3 h6" href="{{url('/userRegistration')}}">Sign Up </a>
+                            <a class="text-center ms-3 h6" href="{{url('/registration-page')}}">Sign Up </a>
                             <span class="ms-1">|</span>
-                            <a class="text-center ms-3 h6" href="{{url('/sendOtp')}}">Forget Password</a>
+                            <a class="text-center ms-3 h6" href="{{url('/send-otp-page')}}">Forget Password</a>
                         </span>
                     </div>
                 </div>
@@ -25,15 +25,26 @@
 </div>
 
 <script>
-     $email = $document.getElementById('email').value();
-     $password = $document.getElementById('password').value();
+     async function SubmitButton() {
+         let email = document.getElementById('email').value;
+         let password = document.getElementById('password').value;
 
-     function SubmitButton() {
-         if($email.length===0){
+         if (email.length === 0) {
              errorToast('Please enter email');
-         }
-         else if($password.length===0){
+         } else if (password.length === 0) {
              errorToast('Please enter password');
+         } else {
+             let url = '/user-login';
+             let response = await axios.post(url, {
+                 email: email,
+                 password: password
+             });
+
+             if (response.status === 200 && response.data['status'] === 'success') {
+                 window.location.href = '/dashboard';
+             } else {
+                 errorToast(response.data['message']);
+             }
          }
      }
 

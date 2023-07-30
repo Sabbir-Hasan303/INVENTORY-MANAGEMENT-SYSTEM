@@ -39,3 +39,49 @@
         </div>
     </div>
 </div>
+
+<script>
+    async function onRegistration() {
+        var email = document.getElementById("email").value;
+        var firstName = document.getElementById("firstName").value;
+        var lastName = document.getElementById("lastName").value;
+        var mobile = document.getElementById("mobile").value;
+        var password = document.getElementById("password").value;
+
+        if (email.length === 0) {
+            errorToast('Please enter email');
+        } else if (firstName.length === 0) {
+            errorToast('Please enter firstName');
+        } else if (lastName.length === 0) {
+            errorToast('Please enter lastName');
+        } else if (mobile.length === 0) {
+            errorToast('Please enter mobile');
+        } else if (password.length === 0) {
+            errorToast('Please enter password');
+        } else {
+            var data = {
+                "email": email,
+                "firstName": firstName,
+                "lastName": lastName,
+                "mobile": mobile,
+                "password": password
+            };
+            let url = '/user-registration';
+
+            let response = await axios.post(url, data);
+
+            if (response.status === 200 && response.data['status'] === 'success') {
+                successToast(response.data['message']);
+                setTimeout(function () {
+                    window.location.href = '/dashboard';
+                },2000)
+
+            } else {
+                errorToast(response.data['message'])
+            }
+        }
+
+
+    }
+
+</script>

@@ -65,10 +65,10 @@ class UserController extends Controller
     function UserLogin(Request $request){
         $count = User::where('email', '=', $request->input('email'))
             ->where('password', '=', $request->input('password'))
-            ->count();
+            ->select('id')->first();
 
-        if($count == 1){
-            $token = JWTToken::CreateToken($request->input('email'));
+        if($count !== null){
+            $token = JWTToken::CreateToken($request->input('email'), $count->id);
             return response()->json([
                 "status" => "success",
                 "message" => "User Login Successfully",
@@ -94,8 +94,8 @@ class UserController extends Controller
             User::where('email', '=', $email)->update(['otp'=>$otp]);
 
             return response()->json([
-                "status" => "successfully send otp",
-                "message" => "Successful"
+                "status" => "Successful",
+                "message" => "successfully send otp"
             ]);
         }
         else{
@@ -119,14 +119,13 @@ class UserController extends Controller
             $token = JWTToken::CreateTokenPassword($request->input('email'));
             return response()->json([
                 "status" => "success",
-                "message" => "OTP Successfully verified",
-                "token" => $token
-            ]);
+                "message" => "OTP Successfully verified"
+            ])->cookie('token',$token, 60*24*30);
         }
         else{
             return response()->json([
                 "status" => "error",
-                "message" => "Invalid Credentials"
+                "message" => "Can't verify OTP"
             ]);
         }
 
@@ -149,5 +148,9 @@ class UserController extends Controller
                 "message" => $e->getMessage()
             ]);
         }
+    }
+
+    function UserLogout(Request $request){
+        return redirect('/login-page')->cookie('token',-1);
     }
 }

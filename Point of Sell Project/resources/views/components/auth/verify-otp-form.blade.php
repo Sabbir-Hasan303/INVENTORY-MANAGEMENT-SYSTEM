@@ -14,3 +14,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    async function VerifyOtp() {
+        var otp = document.getElementById('otp').value;
+        if (otp.length!== 4) {
+            errorToast('Please Enter 4 Digit Code')
+        }
+        else{
+            let url = '/otp-verify'
+            var data = {
+                otp: otp,
+                email: sessionStorage.getItem('email')
+            }
+            let response = await axios.post(url,data);
+            if(response.status === 200 && response.data['status']==='success'){
+                successToast(response.data['message'])
+                sessionStorage.clear()
+                setTimeout(function(){
+                    window.location.href = '/login-page'
+                },1000)
+            }
+            else{
+                errorToast(response.data['message'])
+            }
+        }
+    }
+</script>

@@ -17,15 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/login-page', [UserController::class, 'LoginPage']);
 Route::get('/registration-page', [UserController::class, 'RegistrationPage']);
-Route::get('/reset-pass-page', [UserController::class, 'ResetPasswordPage']);
+Route::get('/reset-pass-page', [UserController::class, 'ResetPasswordPage'])->middleware(TokenVerifyMiddleware::class);
 Route::get('/send-otp-page', [UserController::class, 'SendOTPPage']);
 Route::get('/verify-otp-page', [UserController::class, 'VerifyOTPPage']);
 Route::get('/userProfile', [UserController::class, 'ProfilePage']);
-Route::get('/dashboard', [UserController::class, 'Dashboard']);
-
+Route::get('/dashboard', [UserController::class, 'Dashboard'])->middleware(TokenVerifyMiddleware::class);
+Route::get('/user-logout', [UserController::class, 'UserLogout']);
 
 Route::post('/user-registration', [UserController::class, 'UserRegistration']);
 Route::post('/user-login', [UserController::class, 'UserLogin']);
 Route::post('/send-otp', [UserController::class, 'SendOTP']);
 Route::post('/otp-verify', [UserController::class, 'VerifyOTP']);
 Route::post('/pass-reset', [UserController::class, 'PasswordReset'])->middleware(TokenVerifyMiddleware::class);
+
